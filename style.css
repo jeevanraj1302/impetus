@@ -952,27 +952,46 @@ ul {
 /* ==========================================================================
    SECTION 5: FACULTY COORDINATOR
    ========================================================================== */
+.faculty-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(20px, 3vw, 32px);
+    width: 100%;
+}
+
 .faculty-card {
     background-color: var(--bg-card);
     border-radius: var(--border-radius-lg);
-    padding: 48px;
+    padding: clamp(28px, 4vw, 36px) clamp(20px, 3vw, 28px);
     box-shadow: var(--shadow-lg);
-    display: grid;
-    grid-template-columns: 1fr 2.5fr;
-    gap: 48px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    border: 1px solid rgba(16, 185, 129, 0.15);
+    text-align: center;
+    border: 1px solid rgba(16, 185, 129, 0.18);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.faculty-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
 }
 
 .faculty-img-wrapper {
     position: relative;
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--border-radius-md);
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    border: 3px solid rgba(16, 185, 129, 0.3);
+    border: 2px solid rgba(16, 185, 129, 0.35);
+    width: 100%;
+    max-width: 240px;
     aspect-ratio: 1 / 1;
+    margin-bottom: 22px;
 }
 
 .faculty-img {
@@ -989,35 +1008,29 @@ ul {
 .faculty-details {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .faculty-name {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 2.2vw, 1.45rem);
     font-weight: 700;
     color: var(--white);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
 }
 
 .faculty-designation {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--primary-light);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .faculty-dept {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-light);
-    margin-bottom: 20px;
-}
-
-.faculty-bio {
-    color: var(--text-muted);
-    font-size: 1rem;
-    line-height: 1.7;
-    text-align: justify;
 }
 
 /* ==========================================================================
@@ -1180,25 +1193,6 @@ ul {
     .venue-details-card {
         gap: 20px;
     }
-
-    .faculty-card {
-        grid-template-columns: 1fr;
-        gap: 32px;
-        padding: 36px;
-    }
-
-    .faculty-img-wrapper {
-        max-width: 280px;
-        margin: 0 auto;
-    }
-
-    .faculty-details {
-        text-align: center;
-    }
-
-    .faculty-bio {
-        text-align: center;
-    }
 }
 
 /* --------------------------------------------------------------------------
@@ -1220,6 +1214,11 @@ ul {
     .epoch-members-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 18px;
+    }
+
+    .faculty-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
     }
 }
 
@@ -1381,6 +1380,12 @@ ul {
     .btn {
         width: 100%;
         max-width: 280px;
+    }
+
+    .faculty-grid {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+        margin: 0 auto;
     }
 }
 
