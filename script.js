@@ -51,4 +51,46 @@ document.addEventListener('DOMContentLoaded', () => {
             header?.classList.remove('scrolled');
         }
     }, { passive: true });
+
+    // Event Countdown Timer (Target: October 24, 2026, 09:00:00 AM IST)
+    const daysEl = document.getElementById('timerDays');
+    const hoursEl = document.getElementById('timerHours');
+    const minutesEl = document.getElementById('timerMinutes');
+    const secondsEl = document.getElementById('timerSeconds');
+
+    if (daysEl && hoursEl && minutesEl && secondsEl) {
+        const eventDate = new Date('2026-10-24T09:00:00+05:30').getTime();
+
+        const updateCountdown = () => {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance <= 0) {
+                daysEl.textContent = '00';
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                const badge = document.querySelector('.countdown-badge');
+                if (badge) {
+                    badge.innerHTML = '<span class="countdown-pulse-dot live" aria-hidden="true"></span><span>Event is Live!</span>';
+                }
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const format = (n) => String(n).padStart(2, '0');
+
+            if (daysEl.textContent !== format(days)) daysEl.textContent = format(days);
+            if (hoursEl.textContent !== format(hours)) hoursEl.textContent = format(hours);
+            if (minutesEl.textContent !== format(minutes)) minutesEl.textContent = format(minutes);
+            if (secondsEl.textContent !== format(seconds)) secondsEl.textContent = format(seconds);
+        };
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
 });
