@@ -6,43 +6,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.getElementById('navLinks');
     const header = document.querySelector('.main-header');
 
+    const navBackdrop = document.getElementById('navBackdrop');
+
+    const closeMenu = () => {
+        navToggle?.classList.remove('active');
+        navLinks?.classList.remove('active');
+        navBackdrop?.classList.remove('active');
+        navToggle?.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('no-scroll');
+    };
+
     // Toggle Mobile Navigation Menu
     if (navToggle && navLinks) {
         navToggle.addEventListener('click', () => {
             const isOpened = navToggle.classList.toggle('active');
             navLinks.classList.toggle('active', isOpened);
+            navBackdrop?.classList.toggle('active', isOpened);
             navToggle.setAttribute('aria-expanded', isOpened ? 'true' : 'false');
             document.body.classList.toggle('no-scroll', isOpened);
         });
 
+        // Close menu when backdrop is clicked
+        navBackdrop?.addEventListener('click', closeMenu);
+
         // Close menu when a navigation link is clicked
         const navAnchorLinks = navLinks.querySelectorAll('a');
         navAnchorLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-                navToggle.setAttribute('aria-expanded', 'false');
-                document.body.classList.remove('no-scroll');
-            });
-        });
-
-        // Close menu if user clicks outside of header/menu
-        document.addEventListener('click', (event) => {
-            if (!header.contains(event.target) && navLinks.classList.contains('active')) {
-                navToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-                navToggle.setAttribute('aria-expanded', 'false');
-                document.body.classList.remove('no-scroll');
-            }
+            link.addEventListener('click', closeMenu);
         });
 
         // Close on ESC key press
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && navLinks.classList.contains('active')) {
-                navToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-                navToggle.setAttribute('aria-expanded', 'false');
-                document.body.classList.remove('no-scroll');
+                closeMenu();
             }
         });
     }

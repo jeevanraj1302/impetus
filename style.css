@@ -54,6 +54,7 @@ html {
     scroll-padding-top: 80px;
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -68,7 +69,9 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     width: 100%;
+    max-width: 100vw;
     position: relative;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body.no-scroll {
@@ -102,7 +105,7 @@ body::after {
     background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
     box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
     opacity: 0.3;
-    z-index: 10000;
+    z-index: 990;
     pointer-events: none;
     animation: scan 10s linear infinite;
 }
@@ -262,17 +265,17 @@ ul {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 14px clamp(16px, 3vw, 24px);
+    padding: 12px clamp(12px, 3vw, 24px);
+    width: 100%;
+    min-height: 64px;
 }
 
 .logo {
-    font-size: clamp(1.2rem, 3vw, 1.5rem);
-    font-weight: 800;
-    color: var(--white);
-    letter-spacing: 1.5px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
+    max-width: calc(100% - 56px);
+    min-width: 0;
+    flex-shrink: 1;
 }
 
 .logo-img {
@@ -282,13 +285,14 @@ ul {
 }
 
 .nav-clg-logo {
-    height: clamp(38px, 4.5vw, 48px);
-    max-width: min(70vw, 280px);
+    height: auto;
+    max-height: 44px;
+    max-width: 100%;
     width: auto;
     object-fit: contain;
     background-color: #ffffff;
     border-radius: var(--border-radius-sm);
-    padding: clamp(3px, 0.6vw, 5px) clamp(8px, 1.2vw, 12px);
+    padding: clamp(3px, 0.6vw, 5px) clamp(6px, 1.2vw, 10px);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.1);
     transition: var(--transition-normal);
 }
@@ -296,6 +300,29 @@ ul {
 .nav-clg-logo:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 15px rgba(16, 185, 129, 0.3);
+}
+
+/* Nav Backdrop Overlay */
+.nav-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+}
+
+.nav-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 @keyframes rotateSlow {
@@ -455,16 +482,18 @@ ul {
 }
 
 .hero-title {
-    font-size: clamp(2.2rem, 7vw, 4.5rem);
+    font-size: clamp(2rem, 7vw, 4.2rem);
     font-weight: 900;
     letter-spacing: clamp(1px, 0.5vw, 3px);
     margin-bottom: clamp(16px, 3vw, 24px);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: clamp(12px, 3vw, 24px);
+    gap: clamp(10px, 2.5vw, 24px);
     flex-wrap: wrap;
     line-height: 1.15;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .hero-logo-img {
@@ -1182,12 +1211,12 @@ ul {
    -------------------------------------------------------------------------- */
 @media (max-width: 1024px) {
     .section-container {
-        padding: 80px 24px;
+        padding: 70px 20px;
     }
 
     .epoch-members-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        gap: 18px;
     }
 
     .venue-details-card {
@@ -1199,25 +1228,29 @@ ul {
    TABLETS & MEDIUM SCREENS (Viewport width: <= 860px)
    -------------------------------------------------------------------------- */
 @media (max-width: 860px) {
+    .section-container {
+        padding: 64px 18px;
+    }
+
     .venue-details-card {
         grid-template-columns: 1fr;
         max-width: 480px;
         margin: 0 auto;
-        gap: 20px;
+        gap: 16px;
     }
 
     .rules-list {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 12px;
     }
 
     .epoch-members-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
+        gap: 16px;
     }
 
     .faculty-grid {
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         gap: 20px;
     }
 }
@@ -1226,9 +1259,19 @@ ul {
    MOBILE SCREENS & PHONES (Viewport width: <= 768px)
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
+    body {
+        background-attachment: scroll;
+    }
+
     /* Show mobile navigation hamburger */
     .nav-toggle {
         display: flex;
+        flex-shrink: 0;
+    }
+
+    .nav-clg-logo {
+        max-height: 38px;
+        padding: 3px 6px;
     }
 
     /* Mobile navigation drawer / overlay */
@@ -1236,18 +1279,23 @@ ul {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 100%;
+        width: min(85vw, 340px);
         height: 100vh;
         height: 100dvh;
-        background: rgba(11, 15, 25, 0.97);
+        background: rgba(11, 15, 25, 0.98);
+        border-left: 1px solid rgba(16, 185, 129, 0.25);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.85);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        padding: 80px 24px 40px;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 6px;
+        padding: 80px 18px 36px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
         transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1001;
     }
@@ -1256,93 +1304,114 @@ ul {
         right: 0;
     }
 
+    .nav-links li {
+        width: 100%;
+    }
+
     .nav-links a {
-        font-size: 1.25rem;
-        font-weight: 600;
-        padding: 10px 24px;
+        font-size: 1.05rem;
+        font-weight: 500;
+        padding: 12px 16px;
         color: var(--white);
-        display: inline-block;
-        min-height: 44px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        border-radius: var(--border-radius-sm);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        transition: var(--transition-fast);
+        min-height: 48px;
+    }
+
+    .nav-links a::after {
+        display: none;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:active {
+        background-color: rgba(16, 185, 129, 0.12);
+        color: var(--primary-light);
+        padding-left: 20px;
     }
 
     .nav-links a.nav-btn {
-        width: min(100%, 260px);
+        width: 100%;
         text-align: center;
-        font-size: 1.1rem;
-        padding: 14px 28px;
-        margin-top: 8px;
+        justify-content: center;
+        font-size: 1.05rem;
+        padding: 14px 20px;
+        margin-top: 14px;
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
     }
 
     .hero-section {
         min-height: 100vh;
         min-height: 100dvh;
-        padding-top: 100px;
-        padding-bottom: 60px;
+        padding: 85px 16px 50px;
     }
 
-    .clg-logo {
-        max-width: 320px;
-        padding: 6px 12px;
-        margin-bottom: 12px;
+    .hero-content {
+        padding: 0 4px;
     }
 
-    .about-card {
-        padding: 24px 18px;
-    }
-
-    .epoch-card {
-        padding: 24px 18px;
-    }
-
-    .rules-card {
-        padding: 24px 18px;
-    }
-
-    .registration-cta-card {
-        padding: 40px 20px;
-    }
-
-    .footer-content {
-        flex-direction: column;
-        gap: 32px;
-        align-items: center;
-        text-align: center;
-    }
-
-    .footer-info {
-        max-width: 100%;
-    }
-
-    .footer-links-container {
-        align-items: center;
-    }
-
-    .footer-links {
-        align-items: center;
-    }
-}
-
-/* --------------------------------------------------------------------------
-   SMALL PHONES (Viewport width: <= 480px)
-   -------------------------------------------------------------------------- */
-@media (max-width: 480px) {
-    .navbar {
-        padding: 12px 16px;
-    }
-
-    .nav-clg-logo {
-        max-width: 210px;
-        height: 38px;
-        padding: 3px 8px;
-    }
-
-    .clg-logo {
-        max-width: 270px;
-        padding: 5px 10px;
+    .hero-title {
+        font-size: clamp(1.9rem, 8.5vw, 3rem);
+        gap: 10px;
+        margin-bottom: 14px;
     }
 
     .hero-logo-img {
-        height: 52px;
+        height: clamp(40px, 9vw, 64px);
+    }
+
+    .hero-tagline {
+        font-size: clamp(0.95rem, 3vw, 1.2rem);
+        margin-bottom: 24px;
+    }
+
+    .hero-content .btn {
+        width: min(100%, 280px);
+    }
+
+    .section-container {
+        padding: 55px 16px;
+    }
+
+    .section-title {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+        margin-bottom: 24px;
+    }
+
+    .about-card {
+        padding: 22px 16px;
+        border-radius: var(--border-radius-md);
+    }
+
+    .about-text {
+        font-size: 0.96rem;
+        line-height: 1.68;
+    }
+
+    .epoch-card {
+        padding: 20px 16px;
+        border-radius: var(--border-radius-md);
+        margin-bottom: 28px;
+    }
+
+    .epoch-card-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .epoch-description {
+        font-size: 0.94rem;
+        line-height: 1.68;
+    }
+
+    .epoch-members-heading {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
     }
 
     .epoch-members-grid {
@@ -1352,40 +1421,198 @@ ul {
 
     .epoch-member-badge {
         font-size: 0.65rem;
-        padding: 2px 8px;
-        bottom: 8px;
-        right: 8px;
+        padding: 2px 7px;
+        bottom: 6px;
+        right: 6px;
     }
 
     .epoch-member-info {
-        padding: 12px 8px;
+        padding: 12px 6px;
     }
 
     .epoch-member-name {
-        font-size: 0.98rem;
+        font-size: 0.95rem;
+        line-height: 1.3;
     }
 
     .epoch-member-role {
-        font-size: 0.78rem;
+        font-size: 0.76rem;
     }
 
     .epoch-member-dept {
-        font-size: 0.74rem;
+        font-size: 0.72rem;
+        line-height: 1.3;
+    }
+
+    .rules-card {
+        padding: 20px 14px;
+        border-radius: var(--border-radius-md);
+    }
+
+    .rules-list li {
+        padding: 12px 12px;
+        gap: 12px;
+    }
+
+    .rules-list p {
+        font-size: 0.92rem;
+        line-height: 1.55;
+    }
+
+    .registration-cta-card {
+        padding: 36px 16px;
+        border-radius: var(--border-radius-md);
+    }
+
+    .registration-title {
+        font-size: clamp(1.5rem, 5.5vw, 2.1rem);
+        margin-bottom: 12px;
+    }
+
+    .registration-desc {
+        font-size: 0.94rem;
+        line-height: 1.6;
+        margin-bottom: 24px;
     }
 
     .register-btn {
+        width: min(100%, 300px);
+        padding: 15px 24px;
+        font-size: 1.05rem;
+    }
+
+    .footer-section {
+        padding: 36px 16px;
+    }
+
+    .footer-content {
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-links-container {
+        align-items: center;
         width: 100%;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 18px;
+    }
+
+    .footer-links a {
+        font-size: 0.92rem;
+        padding: 6px 4px;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   TABLET & PHONE CARDS (Viewport width: <= 600px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+    .faculty-grid {
+        grid-template-columns: 1fr;
+        max-width: 320px;
+        margin: 0 auto;
+        gap: 20px;
+    }
+
+    .faculty-card {
+        padding: 24px 18px;
+    }
+
+    .faculty-img-wrapper {
+        max-width: 180px;
+        margin-bottom: 16px;
+    }
+
+    .faculty-name {
+        font-size: 1.25rem;
+    }
+
+    .detail-item {
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+        padding: 18px 16px;
+        gap: 16px;
+    }
+
+    .detail-info {
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .detail-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .detail-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+    }
+
+    .detail-info p {
+        font-size: 0.92rem;
+        line-height: 1.45;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   SMALL PHONES (Viewport width: <= 480px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 14px;
+        min-height: 58px;
+    }
+
+    .nav-clg-logo {
+        max-height: 32px;
+        max-width: min(220px, calc(100vw - 86px));
+        padding: 2px 5px;
+    }
+
+    .nav-toggle {
+        width: 38px;
+        height: 38px;
+        padding: 9px 8px;
+    }
+
+    .hero-title {
+        font-size: clamp(1.75rem, 8vw, 2.4rem);
+    }
+
+    .epoch-members-grid {
+        gap: 10px;
+    }
+
+    .epoch-member-badge {
+        font-size: 0.6rem;
+        padding: 2px 6px;
+    }
+
+    .epoch-member-name {
+        font-size: 0.9rem;
+    }
+
+    .epoch-member-role {
+        font-size: 0.74rem;
+    }
+
+    .epoch-member-dept {
+        font-size: 0.7rem;
     }
 
     .btn {
         width: 100%;
         max-width: 280px;
-    }
-
-    .faculty-grid {
-        grid-template-columns: 1fr;
-        max-width: 300px;
-        margin: 0 auto;
     }
 }
 
@@ -1394,15 +1621,32 @@ ul {
    -------------------------------------------------------------------------- */
 @media (max-width: 360px) {
     .nav-clg-logo {
-        max-width: 170px;
-        height: 32px;
-        padding: 2px 6px;
+        max-height: 28px;
+        max-width: min(180px, calc(100vw - 78px));
+        padding: 2px 4px;
+    }
+
+    .hero-title {
+        font-size: 1.65rem;
+    }
+
+    .hero-logo-img {
+        height: 36px;
     }
 
     .epoch-members-grid {
         grid-template-columns: 1fr;
         max-width: 260px;
         margin: 0 auto;
+        gap: 14px;
+    }
+
+    .faculty-grid {
+        max-width: 280px;
+    }
+
+    .faculty-img-wrapper {
+        max-width: 160px;
     }
 }
 
