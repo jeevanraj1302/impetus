@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const secondsEl = document.getElementById('timerSeconds');
 
     if (daysEl && hoursEl && minutesEl && secondsEl) {
-        const eventDate = new Date('2026-10-20T09:00:00+05:30').getTime();
+        const eventDate = new Date('2026-10-22T09:00:00+05:30').getTime();
 
         const updateCountdown = () => {
             const now = new Date().getTime();
