@@ -52,14 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { passive: true });
 
-    // Event Countdown Timer (Targeted to show 4 days remaining; Event date remains Oct 24, 2026)
+    // Event Countdown Timer (Targeted for October 22, 2026 at 4:30 PM)
     const daysEl = document.getElementById('timerDays');
     const hoursEl = document.getElementById('timerHours');
     const minutesEl = document.getElementById('timerMinutes');
     const secondsEl = document.getElementById('timerSeconds');
 
     if (daysEl && hoursEl && minutesEl && secondsEl) {
-        const eventDate = new Date('2026-10-22T09:00:00+05:30').getTime();
+        const eventDate = new Date('2026-10-22T16:30:00+05:30').getTime();
 
         const updateCountdown = () => {
             const now = new Date().getTime();
