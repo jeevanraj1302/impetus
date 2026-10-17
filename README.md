@@ -61,9 +61,9 @@ Welcome to the official repository for the **IMPETUS.AI** website. IMPETUS.AI is
 
 **Department of AIML & Cyber Security**, Sree Sakthi Engineering College
 
-- **Event Coordinator:** Faculty Coordinator
-- **Class Advisor:** Academic Advisor
-- **Head of Department:** HOD & Professor
+- **Event Coordinator:** Mr. Sivashankaran
+- **Class Advisor:** Dr. P Shree Nandhini
+- **Head of Department:** Ms. R Mohana Santhiya (HOD)
 
 ---
 
